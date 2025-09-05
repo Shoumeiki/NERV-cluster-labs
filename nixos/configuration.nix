@@ -1,4 +1,4 @@
-# nixos/configuration.nix v0.0.06
+# nixos/configuration.nix v0.0.07
 # Headless Kubernetes nodes deployed via NixAnywhere
 
 { config, lib, pkgs, meta, ... }:
@@ -12,6 +12,10 @@
     ./modules/base/network.nix
     ./modules/base/locale.nix
     ./modules/base/packages.nix
+
+    # Secrets management (before services that need secrets)
+    ./modules/sops-nix/config.nix
+    ./modules/sops-nix/users.nix
 
     # Services after base system
     ./modules/services/ssh.nix

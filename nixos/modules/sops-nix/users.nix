@@ -20,11 +20,11 @@
         # SSH keys will be managed here or via sops
       ];
     };
-
     users.root = {
       # Disable root SSH in production
       openssh.authorizedKeys.keys = [ ];
     };
+  };
 
   # SSH hardening - gradual lockdown
   services.openssh.settings = {

@@ -18,14 +18,15 @@
       "ellen/password-hash" = {
         sopsFile = ./secrets/ellen.yaml;
         neededForUsers = true; # Availability during user creation
-      }
+      };
+
       "ellen/ssh-key" =  {
         sopsFile = ./secrets/ellen.yaml;
         owner = "ellen";
         group = "users"
         mode = "0600";
         path = "/home/ellen/.ssh/id_ed25519";
-      }
+      };
 
       # K3s secrets
       "k3s/token" = {
@@ -42,8 +43,4 @@
     "d /var/lib/sops-nix 0700 root root -"
     "z /var/lib/sops-nix/keys.txt 0600 root root -"
   ];
-
-  # Sops tools on primary node only
-  environment.systemPackages = with pkgs;
-    lib.optionals meta.isPrimary [ sops age ];
 }
