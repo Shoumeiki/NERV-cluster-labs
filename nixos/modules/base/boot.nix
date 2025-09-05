@@ -1,5 +1,5 @@
-# nixos/modules/base/boot.nix v0.0.01
-# Boot loader and kernel Configuration
+# nixos/modules/base/boot.nix v0.0.02
+# Boot loader and kernel configuration
 
 { config, lib, pkgs, ... }:
 
@@ -19,4 +19,7 @@
       "fs.file-max" = 2097152;
     };
   };
+
+  # Secure boot partition permissions
+  fileSystems."/boot".options = [ "defaults" "umask=0077" "fmask=0177" "dmask=0077" ];
 }
