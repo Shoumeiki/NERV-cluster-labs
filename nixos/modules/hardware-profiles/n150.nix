@@ -1,12 +1,9 @@
-# nixos/modules/hardware-profiles/n150.nix v0.0.03
+# nixos/modules/hardware-profiles/n150.nix v0.0.05
 # Intel N150 Processor Optimisations
 
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   hardware.graphics = {
@@ -16,7 +13,6 @@
   };
 
   boot = {
-    kernelModules = [ "kvm-intel" ];
     kernelParams = [
       "intel_pstate=enable"
       "pcie_aspm=force"
@@ -30,8 +26,6 @@
     blacklistedKernelModules = [ "rtw88_8821ce" "rtl8821ce" ];
   };
 
-  hardware = {
-    bluetooth.enable = false;
-    wireless.enable = false;
-  };
+  hardware.bluetooth.enable = false;
+  networking.wireless.enable = false;
 }

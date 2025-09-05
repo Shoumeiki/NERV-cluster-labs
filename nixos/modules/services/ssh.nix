@@ -7,9 +7,9 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "no";
+      PermitRootLogin = "yes"; # TODO: create user for SSH
       X11Forwarding = false;
-      PasswordAuthentication = true;
+      PasswordAuthentication = true; # TODO: Enable SSH keys
     };
     allowSFTP = false;
   };
