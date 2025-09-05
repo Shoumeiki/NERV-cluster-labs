@@ -1,4 +1,4 @@
-# nixos/modules/sops-nix/config.nix v0.0.01
+# nixos/modules/sops-nix/config.nix v0.0.02
 # SOPS-nix secrets management configuration
 
 { config, lib, pkgs, meta, ... }:
@@ -6,6 +6,7 @@
 {
   sops = {
     defaultSopsFile = ./secrets/default.yaml;
+    defaultSopsFormat = "yaml";
 
     # Age key location (injected via NixAnywhere --extra-files)
     age.keyFile = "/var/lib/sops-nix/age-key.txt";
@@ -20,9 +21,10 @@
       }
       "ellen/ssh-key" =  {
         sopsFile = ./secrets/ellen.yaml;
-        owner = "root";
+        owner = "ellen";
+        group = "users"
         mode = "0600";
-        path = "/root/.ssh/nerv_deployment_key";
+        path = "/home/ellen/.ssh/id_ed25519";
       }
 
       # K3s secrets

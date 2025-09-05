@@ -1,4 +1,4 @@
-# nixos/flake.nix v0.0.05
+# nixos/flake.nix v0.0.06
 # NERV Cluster Lab Flake
 
 {
@@ -32,16 +32,12 @@
           };
         };
         modules = [
-          # Load order critical: disko first for disk setup
-          disko.nixosModules.disko
-          ./modules/disko/config.nix
-
-          # Hardware detection
+          ./configuration.nix
           ./hardware-configuration.nix
           ./modules/hardware-profiles/${nodeConfig.hardware}.nix
-
-          # Base system configuration
-          ./configuration.nix
+        ] ++ lib.optionals (nodeConfig.useDisko or false) [
+          disko.nixosModules.disko
+          ./modules/disko/config.nix
         ];
       };
   in
