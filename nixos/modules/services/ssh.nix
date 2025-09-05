@@ -1,4 +1,4 @@
-# nixos/modules/services/ssh.nix v0.0.01
+# nixos/modules/services/ssh.nix v0.0.02
 # SSH Service Configuration
 
 { config, lib, pkgs, ... }:
@@ -7,9 +7,12 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "yes"; # TODO: create user for SSH
+      # Gradual security lockdown
+      PermitRootLogin = "yes";          # TODO: Set to "no" once user keys working
+      PasswordAuthentication = true;    # TODO: Set to false once keys working
       X11Forwarding = false;
-      PasswordAuthentication = true; # TODO: Enable SSH keys
+      ChallengeResponseAuthentication = false;
+      PubkeyAuthentication = true;
     };
     allowSFTP = false;
   };

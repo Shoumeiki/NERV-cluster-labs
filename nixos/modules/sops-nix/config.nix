@@ -1,4 +1,4 @@
-# nixos/modules/sops-nix/config.nix v0.0.02
+# nixos/modules/sops-nix/config.nix v0.0.03
 # SOPS-nix secrets management configuration
 
 { config, lib, pkgs, meta, ... }:
@@ -14,16 +14,15 @@
     validateSopsFiles = true;
 
     secrets = {
-      # ellen's secrets
+      # Ellen's secrets
       "ellen/password-hash" = {
         sopsFile = ./secrets/ellen.yaml;
-        neededForUsers = true; # Availability during user creation
+        neededForUsers = true; # Available during user creation
       };
-
-      "ellen/ssh-key" =  {
+      "ellen/ssh-key" = {
         sopsFile = ./secrets/ellen.yaml;
         owner = "ellen";
-        group = "users"
+        group = "users";
         mode = "0600";
         path = "/home/ellen/.ssh/id_ed25519";
       };
@@ -38,9 +37,13 @@
     };
   };
 
-  # Verify sops key directories
+  # Ensure sops directories exist with correct permissions
   systemd.tmpfiles.rules = [
     "d /var/lib/sops-nix 0700 root root -"
-    "z /var/lib/sops-nix/keys.txt 0600 root root -"
+    "d /home/ellen/.ssh 0700 ellen users -"
   ];
+
+  # SOPS tools on primary node only
+  environment.systemPackages = with pkgs;
+    lib.optionals (meta.primary or false) [ sops age ];
 }
